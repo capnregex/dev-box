@@ -1,0 +1,3 @@
+#!/bin/bash
+# packer build -only=virtualbox-iso ruby_dev.json
+packer build rails_dev_box.json
