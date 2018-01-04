@@ -12,3 +12,16 @@ Custom Vagrant box using Packer and VirtualBox based on chef/bento/ubuntu
 ```bash
 $ ./build
 ```
+
+## Repository Files
+
+* build # Bash script to execute packer with configuration 
+* rails_dev_box.json # json configuration file for packer
+* http/preseed.cfg # ubuntu install configuration file
+* scripts/ # bash scripts listed in json configuration file 
+
+## Generated Files
+
+* packer_cache/ # stuff packer downloads for build, like the ubuntu iso
+* builds/ # output box files 
+
