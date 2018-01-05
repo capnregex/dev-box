@@ -1,0 +1,60 @@
+#!/bin/sh -eux
+
+sudo apt-get -y install \
+  linux-headers-$(uname -r) \
+  apt-transport-https \
+  asciidoc \
+  automake \
+  build-essential \
+  ca-certificates \
+  curl \
+  docbook2x \
+  dkms \
+  firefox \
+  fontconfig \
+  g++ \
+  gcc \
+  gettext \
+  git-core \
+  graphviz \
+  gstreamer1.0-plugins-base \
+  gstreamer1.0-tools \
+  gstreamer1.0-x \
+  libssl-dev \
+  libcurl4-openssl-dev \
+  libevent-dev \
+  libexpat1-dev \
+  libffi-dev \
+  libgdbm-dev \
+  libgdbm3 \
+  libqt5webkit5-dev \
+  libreadline-dev \
+  libsqlite3-dev \
+  libxml2-dev \
+  libxslt1-dev \
+  libxslt-dev \
+  libsqlite3-dev \
+  libssl-dev \
+  libyaml-dev \
+  linux-image-extra-virtual \
+  make \
+  ncurses-dev \
+  python-software-properties \
+  qt5-default \
+  software-properties-common \
+  sqlite3 \
+  tcl \
+  unzip \
+  vim \
+  vim-gnome \
+  wget \
+  x11-xkb-utils \
+  xfonts-100dpi \
+  xfonts-75dpi \
+  xfonts-scalable \
+  xfonts-cyrillic \
+  xmlto \
+  xvfb \
+  zlib1g-dev \
+  zsh
+
