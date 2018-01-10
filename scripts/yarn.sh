@@ -6,11 +6,11 @@ curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 
 sudo apt-get update
-sudo apt-get upgrade
-sudo apt-get install python-dev npm yarn
+sudo apt-get -y upgrade
+sudo apt-get -y install python-dev npm yarn
 
 # install core components including Node.js, flow and react-native
-sudo npm intall -g n
+sudo npm install -g n
 sudo n latest
 sudo npm install -g npm@latest
 

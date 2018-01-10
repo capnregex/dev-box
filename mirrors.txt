@@ -1,0 +1,5 @@
+http://ubuntu.cs.utah.edu/ubuntu/
+
+deb http://ubuntu.cs.utah.edu/ubuntu/ artful main 
+deb-src http://ubuntu.cs.utah.edu/ubuntu/ artful main 
+
