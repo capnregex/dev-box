@@ -1,6 +1,0 @@
-#!/bin/bash
-# packer build -only=virtualbox-iso ruby_dev.json
-packer build rails_dev_box.json
-vagrant box add --force --name rails_dev_box builds/rails_dev_box.virtualbox.box
-vagrant destroy
-vagrant up

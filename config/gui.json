@@ -1,0 +1,59 @@
+{
+  "builders": [
+    {
+      "type": "virtualbox-ovf",
+      "source_path": "build/mini.ovf",
+      "output_directory": "build/{{user `name`}}",
+      "vm_name": "build/{{user `name`}}",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "format": "ovf",
+      "boot_wait": "10s",
+      "ssh_wait_timeout": "10000s",
+      "shutdown_command": "sudo shutdown --poweroff now"
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "output": "boxes/{{user `name`}}.{{.Provider}}.box",
+      "keep_input_artifact": true
+    }
+  ],
+  "provisioners": [
+    {
+      "environment_vars": [
+        "DEBIAN_FRONTEND=noninteractive",
+        "HOME_DIR=/home/vagrant",
+        "http_proxy={{user `http_proxy`}}",
+        "https_proxy={{user `https_proxy`}}",
+        "no_proxy={{user `no_proxy`}}"
+      ],
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
+      "expect_disconnect": true,
+      "scripts": [
+        "scripts/use_utf8.sh",
+        "scripts/xubuntu-desktop.sh",
+        "scripts/virtualbox_additions.sh",
+        "scripts/autologin.sh",
+        "scripts/chrome.sh",
+        "scripts/minimize.sh"
+      ],
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "build_timestamp": "{{isotime \"20060102150405\"}}",
+    "cpus": "1",
+    "disk_size": "65536",
+    "git_revision": "__unknown_git_revision__",
+    "headless": "",
+    "http_proxy": "{{env `http_proxy`}}",
+    "https_proxy": "{{env `https_proxy`}}",
+    "hyperv_generation": "2",
+    "hyperv_switch": "{{env `hyperv_switch`}}",
+    "memory": "1024",
+    "name": "gui",
+    "version": "TIMESTAMP"
+  }
+}
