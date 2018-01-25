@@ -2,7 +2,7 @@
   "builders": [
     {
       "type": "virtualbox-ovf",
-      "source_path": "build/mini.ovf",
+      "source_path": "build/mini/packer-mini.ovf",
       "output_directory": "build/{{user `name`}}",
       "vm_name": "build/{{user `name`}}",
       "ssh_username": "vagrant",

@@ -1,0 +1,22 @@
+{
+  "builders": [
+    {
+      "type": "virtualbox-ovf",
+      "source_path": "build/{{user `name`}}/packer-{{user `name`}}.ovf",
+      "output_directory": "build/box-{{user `name`}}",
+      "vm_name": "build/{{user `name`}}",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "boot_wait": "10s",
+      "ssh_wait_timeout": "10000s",
+      "shutdown_command": "sudo shutdown --poweroff now"
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "output": "boxes/{{user `name`}}.{{.Provider}}.box",
+      "keep_input_artifact": true
+    }
+  ]
+}

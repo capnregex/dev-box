@@ -1,6 +1,18 @@
 {
   "builders": [
     {
+      "type": "virtualbox-iso",
+      "format": "ovf",
+      "guest_os_type": "Ubuntu_64",
+      "iso_checksum_url": "iso/mini.sha256",
+      "iso_checksum": "05db73efd450156d81a519d35bc7b8109101e12d7ee8d49da695778df568cb36",
+      "iso_checksum_type": "sha256",
+      "iso_url": "iso/mini.iso",
+
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_wait_timeout": "10000s",
+
       "boot_command": [
         "<esc><wait>",
         "<esc><wait>",
@@ -26,39 +38,16 @@
         "<enter><wait>"
       ],
       "boot_wait": "10s",
-      "disk_size": "{{user `disk_size`}}",
-      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
-      "guest_os_type": "Ubuntu_64",
+      "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
       "hard_drive_interface": "sata",
-      "headless": "{{ user `headless` }}",
       "http_directory": "http",
-      "iso_checksum_file": "{{user `iso_checksum_file`}}",
-      "iso_checksum_type": "{{user `iso_checksum_type`}}",
-      "iso_url": "{{user `iso_url`}}",
-      "output_directory": "build/{{user `iso_url`}}",
-      "shutdown_command": "sudo shutdown --poweroff now",
-      "ssh_password": "vagrant",
-      "ssh_port": 22,
-      "ssh_username": "vagrant",
-      "ssh_wait_timeout": "10000s",
-      "type": "virtualbox-iso",
-      "format": "ovf",
-      "vboxmanage": [
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--memory",
-          "{{ user `memory` }}"
-        ],
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--cpus",
-          "{{ user `cpus` }}"
-        ]
-      ],
+      "output_directory": "build/mini",
+      "guest_additions_mode": "attach",
       "virtualbox_version_file": ".vbox_version",
-      "vm_name": "build/{{ user `name` }}"
+      "vm_name": "packer-mini",
+      "vboxmanage": [
+        ["modifyvm", "{{.Name}}", "--memory", "1024"]
+      ]
     }
   ],
   "provisioners": [
@@ -89,24 +78,7 @@
     }
   ],
   "variables": {
-    "build_timestamp": "{{isotime \"20060102150405\"}}",
-    "cpus": "1",
-    "disk_size": "65536",
-    "git_revision": "__unknown_git_revision__",
-    "headless": "",
-
-    "hyperv_generation": "2",
-    "hyperv_switch": "{{env `hyperv_switch`}}",
-
-    "iso_checksum_file": "iso/mini.sha256",
-    "iso_checksum_type": "sha256",
-    "iso_url": "iso/mini.iso",
-    "iso_name": "mini.iso",
-
-    "memory": "1024",
-    "name": "mini",
     "preseed_path": "mini.cfg",
-    "template": "ubuntu-17.10-amd64",
-    "version": "TIMESTAMP"
+    "name": "mini"
   }
 }
