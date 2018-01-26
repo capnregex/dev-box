@@ -1,6 +1,7 @@
 ## ignore generated files
 /packer_cache
 /builds
+/boxes
 /build
 /ovf
 /iso

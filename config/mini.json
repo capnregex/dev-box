@@ -77,6 +77,13 @@
       "type": "shell"
     }
   ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "output": "boxes/{{user `name`}}.{{.Provider}}.box",
+      "keep_input_artifact": true
+    }
+  ],
   "variables": {
     "preseed_path": "mini.cfg",
     "name": "mini"
