@@ -1,0 +1,5 @@
+
+directory to store vms in 
+vboxmanage setproperty machinefolder /path/to/directory/
+
+

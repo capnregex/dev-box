@@ -40,10 +40,12 @@
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
       "hard_drive_interface": "sata",
       "http_directory": "http",
-      "output_directory": "build/mini",
+      "output_directory": "ovf/base",
       "guest_additions_mode": "attach",
       "virtualbox_version_file": ".vbox_version",
-      "vm_name": "packer-mini",
+      "vm_name": "packer-base",
+      "keep_registered": true,
+      "skip_export": false,
       "vboxmanage": [
         ["modifyvm", "{{.Name}}", "--memory", "1024"]
       ]
@@ -63,28 +65,19 @@
       "scripts": [
         "scripts/use_closest_mirror.sh",
         "scripts/dont_install_suggests_or_recommends.sh",
-        "scripts/update.sh",
         "scripts/speed_up_sshd.sh",
         "scripts/configure_eth.sh",
         "scripts/vagrant_sudo_without_password.sh",
         "scripts/add_default_vagrant_ssh_key.sh",
         "scripts/virtualbox_additions.sh",
         "scripts/use_utf8.sh",
-        "scripts/cleanup.sh",
         "scripts/minimize.sh"
       ],
       "type": "shell"
     }
   ],
-  "post-processors": [
-    {
-      "type": "vagrant",
-      "output": "boxes/{{user `name`}}.{{.Provider}}.box",
-      "keep_input_artifact": true
-    }
-  ],
   "variables": {
-    "preseed_path": "mini.cfg",
-    "name": "mini"
+    "preseed_path": "base.cfg",
+    "name": "base"
   }
 }

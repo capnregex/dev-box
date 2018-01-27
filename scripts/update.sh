@@ -11,12 +11,12 @@ sed -i.bak 's/^Prompt=.*$/Prompt=never/' /etc/update-manager/release-upgrades;
 apt-get -y update;
 
 # update package index on boot
-cat <<EOF >/etc/init/refresh-apt.conf;
-description "update package index"
-start on networking
-task
-exec /usr/bin/apt-get update
-EOF
+# cat <<EOF >/etc/init/refresh-apt.conf;
+# description "update package index"
+# start on networking
+# task
+# exec /usr/bin/apt-get update
+# EOF
 
 # Disable periodic activities of apt
 cat <<EOF >/etc/apt/apt.conf.d/10disable-periodic;

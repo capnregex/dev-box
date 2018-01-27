@@ -1,9 +1,26 @@
 #!/usr/bin/env rake
 
+vms_path = File.expand_path('./vms')
+
+ENV['VBOX_USER_HOME']=vms_path
+
+desc "virtual box directory"
+directory 'vms'
+file 'vms' do
+  sh "vboxmanage setproperty machinefolder #{vms_path}"
+end
+file 'vms/VirtualBox.xml' => 'vms'
+namespace :vms do
+  task list: ['vms','vms/VirtualBox.xml'] do
+    sh "vboxmanage list vms"
+  end
+end
+
 task default: :build
 
 directory 'boxes'
 directory 'iso'
+
 
 file 'iso/mini.iso' => 'iso' do
   sh 'wget -O iso/mini.iso http://archive.ubuntu.com/ubuntu/dists/artful/main/installer-amd64/current/images/netboot/mini.iso'
@@ -25,13 +42,20 @@ config_files = FileList['config/*.json']
 config_files.each do |config_file|
   base_name = config_file.pathmap("%n")
   ovf_file = config_file.pathmap("build/%n/packer-%n.ovf")
-  ovf_dir = config_file.pathmap("build/%n")
+  build_dir = config_file.pathmap("build/%n")
   box_file = config_file.pathmap("boxes/%n.virtualbox.box")
 
-  namespace :ovf do 
-    directory ovf_dir
+  directory build_dir
 
-    file ovf_file => [ovf_dir, config_file] do
+  namespace :build do 
+    task base_name => [config_file,'vms'] do
+      sh "packer build -force -var 'name=#{base_name}' #{config_file}"
+    end
+  end
+
+  namespace :ovf do 
+
+    file ovf_file => [build_dir, config_file] do
       sh "packer build -force -var 'name=#{base_name}' #{config_file}"
     end
 
@@ -44,6 +68,17 @@ config_files.each do |config_file|
 
     desc "build #{box_file}"
     task base_name => box_file do
+    end
+  end
+
+  namespace :package do
+    desc "package #{box_file}"
+    task base_name => box_file do
+    # https://github.com/crohr/ebarnouflant/issues/7
+    # VBoxManage import ./UCS-Virtualbox-Demo-Image.ova --vsys 0 --eula accept
+    # VBoxManage list vms
+    # vagrant package --base acef4c0a-35be-4640-a214-be135417f04d --output UCS.box
+    # vagrant box add UCS.box --name UCS
     end
   end
 end
