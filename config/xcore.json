@@ -40,9 +40,9 @@
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
       "hard_drive_interface": "sata",
       "http_directory": "http",
-      "output_directory": "ovf/base",
+      "output_directory": "ovf/xcore",
       "virtualbox_version_file": ".vbox_version",
-      "vm_name": "base",
+      "vm_name": "xcore",
       "keep_registered": true,
       "skip_export": false,
       "vboxmanage": [
@@ -61,11 +61,11 @@
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
       "expect_disconnect": true,
       "scripts": [
-        "scripts/use_closest_mirror.sh",
         "scripts/dont_install_suggests_or_recommends.sh",
         "scripts/speed_up_sshd.sh",
         "scripts/configure_eth.sh",
         "scripts/vagrant_sudo_without_password.sh",
+        "scripts/autologin.sh",
         "scripts/add_default_vagrant_ssh_key.sh",
         "scripts/virtualbox_additions.sh",
         "scripts/use_utf8.sh",
@@ -83,7 +83,7 @@
   ],
 
   "variables": {
-    "preseed_path": "base.cfg",
-    "name": "base"
+    "preseed_path": "xcore.cfg",
+    "name": "xcore"
   }
 }

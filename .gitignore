@@ -6,6 +6,8 @@
 /ovf
 /vms
 /iso
+/mini_iso
+/images
 /.vagrant
 
 ## ignore vi artifacts

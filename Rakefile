@@ -14,6 +14,14 @@ namespace :vms do
   task list: ['vms','vms/VirtualBox.xml'] do
     sh "vboxmanage list vms"
   end
+  FileList['vms/*/*.vbox'].each do |vbox_file|
+    if vbox_file =~ %r{vms/(.+)/\1.vbox}
+      box_name = $1
+      task box_name => [vbox_file,'vms'] do
+        sh "VBoxManage", "startvm", box_name
+      end
+    end
+  end
 end
 
 task default: :build
@@ -39,6 +47,10 @@ namespace :iso do
 end
 
 config_files = FileList['config/*.json']
+base_names = config_files.pathmap("build:%n")
+box_files = config_file.pathmap("boxes/%n.virtualbox.box")
+desc "build all"
+task build: base_names
 config_files.each do |config_file|
   base_name = config_file.pathmap("%n")
   ovf_file = config_file.pathmap("build/%n/packer-%n.ovf")
@@ -81,9 +93,23 @@ config_files.each do |config_file|
     # vagrant box add UCS.box --name UCS
     end
   end
+
+  namespace :clear do
+    task base_name do
+      sh "VBoxManage closemedium disk packer-#{base_name} --delete" 
+      sh "VBoxManage unregistervm packer-#{base_name} --delete"
+    end
+  end
 end
 
+
 file 'build/mini/packer-mini.ovf' => ['iso/mini.iso', 'iso/mini.sha256']
+
+task :clean do
+  %w(builds boxes build ovf vms).each do |dir|
+    rm_rf dir
+  end
+end
 
 # vagrant box add --force --name rails_dev_box builds/rails_dev_box.virtualbox.box
 # vagrant destroy

@@ -7,11 +7,9 @@
       "iso_checksum": "05db73efd450156d81a519d35bc7b8109101e12d7ee8d49da695778df568cb36",
       "iso_checksum_type": "sha256",
       "iso_url": "iso/mini.iso",
-
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
       "ssh_wait_timeout": "10000s",
-
       "boot_command": [
         "<esc><wait>",
         "<esc><wait>",
@@ -33,57 +31,23 @@
         " hostname=vagrant",
         " grub-installer/bootdev=/dev/sda",
         " noapic",
-        " url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `preseed_path`}}",
+        " url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{.Name}}.cfg",
         "<enter><wait>"
       ],
       "boot_wait": "10s",
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
       "hard_drive_interface": "sata",
+      "sata_port_count": 3,
+      "guest_additions_mode": "attach",
       "http_directory": "http",
-      "output_directory": "ovf/base",
+      "output_directory": "ovf/{{.Name}}",
       "virtualbox_version_file": ".vbox_version",
-      "vm_name": "base",
+      "vm_name": "{{.Name}}",
       "keep_registered": true,
       "skip_export": false,
       "vboxmanage": [
-        ["modifyvm", "{{.Name}}", "--memory", "1024"],
-        ["storagectl", "{{.Name}}", "--name", "SATA Controller", "--portcount", "5"],
-        ["storageattach", "{{.Name}}", "--storagectl", "SATA Controller", "--port", "1", "--device", "0", "--type", "dvddrive", "--medium", "emptydrive"]
+        ["modifyvm", "{{.Name}}", "--memory", "1024"]
       ]
     }
-  ],
-  "provisioners": [
-    {
-      "environment_vars": [
-        "DEBIAN_FRONTEND=noninteractive",
-        "HOME_DIR=/home/vagrant"
-      ],
-      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
-      "expect_disconnect": true,
-      "scripts": [
-        "scripts/use_closest_mirror.sh",
-        "scripts/dont_install_suggests_or_recommends.sh",
-        "scripts/speed_up_sshd.sh",
-        "scripts/configure_eth.sh",
-        "scripts/vagrant_sudo_without_password.sh",
-        "scripts/add_default_vagrant_ssh_key.sh",
-        "scripts/virtualbox_additions.sh",
-        "scripts/use_utf8.sh",
-        "scripts/minimize.sh"
-      ],
-      "type": "shell"
-    }
-  ],
-  "post-processors": [
-    {
-      "type": "vagrant",
-      "output": "boxes/{{user `name`}}.{{.Provider}}.box",
-      "keep_input_artifact": true
-    }
-  ],
-
-  "variables": {
-    "preseed_path": "base.cfg",
-    "name": "base"
-  }
+  ]
 }
