@@ -27,8 +27,15 @@ end
 task default: :build
 
 directory 'boxes'
-directory 'iso'
+directory 'iso/xenial'
 
+file 'iso/xenial/desktop.iso' => 'iso/xenial' do
+  ssh 'wget -O iso/xenial/desktop.iso http://releases.ubuntu.com/xenial/ubuntu-16.04.3-desktop-amd64.iso'
+end
+
+file 'iso/xenial/server.iso' => 'iso/xenial' do
+  ssh 'wget -O iso/xenial/server.iso http://releases.ubuntu.com/xenial/ubuntu-16.04.3-server-amd64.iso'
+end
 
 file 'iso/mini.iso' => 'iso' do
   sh 'wget -O iso/mini.iso http://archive.ubuntu.com/ubuntu/dists/artful/main/installer-amd64/current/images/netboot/mini.iso'
@@ -48,7 +55,7 @@ end
 
 config_files = FileList['config/*.json']
 base_names = config_files.pathmap("build:%n")
-box_files = config_file.pathmap("boxes/%n.virtualbox.box")
+box_files = config_files.pathmap("boxes/%n.virtualbox.box")
 desc "build all"
 task build: base_names
 config_files.each do |config_file|
